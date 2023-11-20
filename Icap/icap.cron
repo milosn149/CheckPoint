@@ -1,2 +1,2 @@
 # Run ICAP test every 1 minute
-*/1 * * * * root /home/admin/Moneta/icap-test.sh
+*/1 * * * * root /home/_nonlocl/bin/icap-test.sh >/dev/null 2>&1

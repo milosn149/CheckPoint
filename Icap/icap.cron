@@ -1,0 +1,2 @@
+# Run ICAP test every 1 minute
+*/1 * * * * root /home/admin/Moneta/icap-test.sh

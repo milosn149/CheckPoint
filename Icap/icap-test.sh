@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# version 0.7
+# version 0.71
 #
 
 # shellcheck disable=SC1091
@@ -47,6 +47,8 @@ collect_files() {
     cp $cpu_top $workdir/icap-"$suffix"
     cp /var/log/messages $workdir/icap-"$suffix"
     cp "$FWDIR"/c-icap/etc/c-icap.conf $workdir/icap-"$suffix"
+    cp "$FWDIR"/state/local/AMW/local.set $workdir/icap-"$suffix"
+    cp "$FWDIR"/state/__tmp/AMW/local.set $workdir/icap-"$suffix"
     tar cvzf "$workdir/icap-$suffix.tgz" "$workdir/icap-$suffix" >/dev/null 2>&1
     rm -rf "$workdir/icap-$suffix"
     #
@@ -132,9 +134,10 @@ else
 		    #
 		    # Send notification email only once and collect support file when will be known
 		    #
-            	    echo "The AV is not working as expected. Eicar test file was not detected as malware. Check the logfiles of icapt_test and $FWDIR/log/ted.elg." | $send_email_ntt
-            	    echo "The AV is not working as expected. Eicar test file was not detected as malware. Check the logfiles of icapt_test and $FWDIR/log/ted.elg." | $send_email_moneta
-		    touch "$email_malware_lock"
+            	echo "The AV is not working as expected. Eicar test file was not detected as malware. Check the logfiles of icapt_test and $FWDIR/log/ted.elg." | $send_email_ntt
+            	echo "The AV is not working as expected. Eicar test file was not detected as malware. Check the logfiles of icapt_test and $FWDIR/log/ted.elg." | $send_email_moneta
+		        touch "$email_malware_lock"
+                collect_files
 	    fi
 	else
             if [ -f "$email_malware_lock" ]

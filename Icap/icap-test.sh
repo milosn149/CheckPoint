@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# version 0.71
+# version 0.72
 #
 
 # shellcheck disable=SC1091
@@ -64,7 +64,9 @@ collect_files() {
 top -H -w512 -d10 -b -n2 |
     awk '/^ *PID +USER +/ {headers++} headers==2' |
     grep "$process" >"$cpu_top"
-sed -Ee 's/\s+/ /g' "$cpu_top" | cut -d " " -f9 >"$tmpout"
+
+#sed -Ee 's/\s+/ /g' "$cpu_top" | cut -d " " -f9 >"$tmpout"
+awk '{print $9}' "$cpu_top" >"$tmpout"
 
 #
 # Testing the utilization of ICAP processes

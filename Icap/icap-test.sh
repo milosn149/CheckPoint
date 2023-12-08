@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# version 0.72
+# version 0.73
 #
 
 # shellcheck disable=SC1091
@@ -46,6 +46,7 @@ collect_files() {
     cp "$FWDIR"/log/c-icap/server* $workdir/icap-"$suffix"
     cp $cpu_top $workdir/icap-"$suffix"
     cp /var/log/messages $workdir/icap-"$suffix"
+    cp "$FWDIR"/log/ted.log $workdir/icap-"$suffix"
     cp "$FWDIR"/c-icap/etc/c-icap.conf $workdir/icap-"$suffix"
     cp "$FWDIR"/state/local/AMW/local.set $workdir/icap-"$suffix"
     cp "$FWDIR"/state/__tmp/AMW/local.set $workdir/icap-"$suffix"

@@ -30,6 +30,8 @@ def check_summary ():
         f"deleted-objects is empty: {deleted_objects_empty}, " + 
         f"user-name has priviledge do publish: {user_can_publish}"
     )
+
+    # Only for detailed testing
     # print(f"added-objects are only application-site: {different_type_objects_empty}")
     # print(f"modified-objects is empty: {modified_objects_empty}")
     # print(f"deleted-objects is empty: {deleted_objects_empty}")
@@ -46,7 +48,7 @@ def check_summary ():
     return(summary)
 
 
-
+# main() ???
 # Example usage
 file_path = sys.argv[1]
 data = load_base64_file_as_json(file_path)
@@ -65,7 +67,6 @@ if user_prefix in user_name:
     user_can_publish = True
 else:
     user_can_publish = False
-
 
 # Print result to SmartConsole's Smart Tasks
 if modified_objects_empty and deleted_objects_empty and different_type_objects_empty and user_can_publish:

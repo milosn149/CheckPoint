@@ -4,11 +4,11 @@ import json
 import base64
 import sys
 
-json_content = ""
 user_prefix = "admin"
+msg_failure = {"result": "failure", "message": "Something is going wrong."}
+msg_success = {"result": "success", "message": "All is ok, publishing."}
 
-
-def load_and_print_base64_file_as_json(file_path):
+def load_base64_file_as_json(file_path):
     with open(file_path, 'r') as file:
         encoded_content = file.read()
     
@@ -23,17 +23,33 @@ def load_and_print_base64_file_as_json(file_path):
 
     return(json_content)
 
-def print_check_summary ():
+def check_summary ():
     # Checks results
-    print(f"added-objects are only application-site: {different_type_objects_empty}")
-    print(f"modified-objects is empty: {modified_objects_empty}")
-    print(f"deleted-objects is empty: {deleted_objects_empty}")
-    print(f"user-name has priviledge do publish: {user_can_publish}")
+    summary = (f"added-objects are only application-site: {different_type_objects_empty}, " + 
+        f"modified-objects is empty: {modified_objects_empty}, " + 
+        f"deleted-objects is empty: {deleted_objects_empty}, " + 
+        f"user-name has priviledge do publish: {user_can_publish}"
+    )
+    # print(f"added-objects are only application-site: {different_type_objects_empty}")
+    # print(f"modified-objects is empty: {modified_objects_empty}")
+    # print(f"deleted-objects is empty: {deleted_objects_empty}")
+    # print(f"user-name has priviledge do publish: {user_can_publish}")
+    
+    # Only for detailed testing
+    #if different_type_objects:
+    #    print(f"Objects with different types: {len(different_type_objects)}")
+    #    #for obj in different_type_objects:
+    #    #    print(obj)
+    #else:
+    #    print("No objects with different types than \"application-site\" found.")
+
+    return(summary)
+
+
 
 # Example usage
-#file_path = 'data.base64'
 file_path = sys.argv[1]
-data = load_and_print_base64_file_as_json(file_path)
+data = load_base64_file_as_json(file_path)
 
 # Check if 'modified-objects' and 'deleted-objects' are empty arrays
 modified_objects_empty = len(data['operations']['modified-objects']) == 0
@@ -50,24 +66,15 @@ if user_prefix in user_name:
 else:
     user_can_publish = False
 
-# Checks results
-#print(f"added-objects are only application-site: {different_type_objects_empty}")
-#print(f"modified-objects is empty: {modified_objects_empty}")
-#print(f"deleted-objects is empty: {deleted_objects_empty}")
-#print(f"user-name has priviledge do publish: {user_can_publish}")
-
-# Only for detailed testing
-#if different_type_objects:
-#    print(f"Objects with different types: {len(different_type_objects)}")
-#    #for obj in different_type_objects:
-#    #    print(obj)
-#else:
-#    print("No objects with different types than \"application-site\" found.")
-
-print_check_summary()
 
 # Print result to SmartConsole's Smart Tasks
 if modified_objects_empty and deleted_objects_empty and different_type_objects_empty and user_can_publish:
-    print('All is ok, publishing.')
+    message = msg_success
+else:
+    msg_failure['message'] = "Check Fails: {}".format(check_summary())
+    message = msg_failure
+
+json.dump(message, sys.stdout)
+
 
 

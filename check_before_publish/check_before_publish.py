@@ -72,6 +72,7 @@ def main(content):
     different_type_objects = [obj for obj in data['operations']['added-objects'] if obj['type'] != 'application-site']
     different_type_objects_empty = len(different_type_objects) == 0
 
+    # Summary of testing
     summary = (f"added-objects are only application-site: {different_type_objects_empty}, " + 
         f"modified-objects is empty: {modified_objects_empty}, " + 
         f"deleted-objects is empty: {deleted_objects_empty}, " + 
@@ -86,6 +87,9 @@ def main(content):
         message = msg_failure
 
     json.dump(message, sys.stdout)
+
+
+
 
 if __name__ == '__main__':
     main(sys.argv[1])

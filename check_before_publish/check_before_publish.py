@@ -5,9 +5,6 @@ import base64
 import sys
 
 
-# admin_prefix = "admin"
-msg_failure = {"result": "failure", "message": "Something is going wrong."}
-msg_success = {"result": "success", "message": "All is ok, publishing."}
 
 
 def is_it_file(content):
@@ -40,66 +37,55 @@ def load_base64_file_as_json(content):
     return(json_content)
 
 
-def check_summary ():
-    # Checks results
+def main(content):
+    # Example usage
+    # admin_prefix = "admin"
+    msg_failure = {"result": "failure", "message": "Something is going wrong."}
+    msg_success = {"result": "success", "message": "All is ok, publishing."}
+
+    #content = sys.argv[1]
+
+    if is_it_file(content):
+        #print("Je to soubor.")
+        data = load_base64_file_as_json(content)
+    else:
+        #print("Neni to soubor.")
+        data = convert_to_json(content)
+
+    # Load Smart Task Custom's parameters
+    session_name_prefix=data['custom-data']['session-name-prefix']
+    admin_prefix=data['custom-data']['admin-name-prefix']
+    #print(admin_prefix, session_name_prefix)
+
+    # Check if user-name contains the admin_prefix
+    user_name = data["session"]["user-name"]
+    if admin_prefix in user_name:
+        user_can_publish = True
+    else:
+        user_can_publish = False
+
+    # Check if 'modified-objects' and 'deleted-objects' are empty arrays
+    modified_objects_empty = len(data['operations']['modified-objects']) == 0
+    deleted_objects_empty = len(data['operations']['deleted-objects']) == 0
+
+    # Check if any added object has a type different from 'application-site' => define as a function?
+    different_type_objects = [obj for obj in data['operations']['added-objects'] if obj['type'] != 'application-site']
+    different_type_objects_empty = len(different_type_objects) == 0
+
     summary = (f"added-objects are only application-site: {different_type_objects_empty}, " + 
         f"modified-objects is empty: {modified_objects_empty}, " + 
         f"deleted-objects is empty: {deleted_objects_empty}, " + 
         f"user-name has priviledge do publish: {user_can_publish}"
     )
 
-    # Only for detailed testing
-    #print(f"added-objects are only application-site: {different_type_objects_empty}")
-    #print(f"modified-objects is empty: {modified_objects_empty}")
-    #print(f"deleted-objects is empty: {deleted_objects_empty}")
-    #print(f"user-name has priviledge do publish: {user_can_publish}")
-    #
-    #if different_type_objects:
-    #    print(f"Objects with different types: {len(different_type_objects)}")
-    #    #for obj in different_type_objects:
-    #    #    print(obj)
-    #else:
-    #    print("No objects with different types than \"application-site\" found.")
+    # Print result to SmartConsole's Smart Tasks
+    if modified_objects_empty and deleted_objects_empty and different_type_objects_empty and user_can_publish:
+        message = msg_success
+    else:
+        msg_failure['message'] = "Check Fails: {}".format(summary)
+        message = msg_failure
 
-    return(summary)
+    json.dump(message, sys.stdout)
 
-
-# main() ???
-# Example usage
-content = sys.argv[1]
-
-if is_it_file(content):
-    #print("Je to soubor.")
-    data = load_base64_file_as_json(content)
-else:
-    #print("Neni to soubor.")
-    data = convert_to_json(content)
-
-# Load Smart Task Custom's parameters
-session_name_prefix=data['custom-data']['session-name-prefix']
-admin_prefix=data['custom-data']['admin-name-prefix']
-#print(admin_prefix, session_name_prefix)
-
-# Check if user-name contains the admin_prefix
-user_name = data["session"]["user-name"]
-if admin_prefix in user_name:
-    user_can_publish = True
-else:
-    user_can_publish = False
-
-# Check if 'modified-objects' and 'deleted-objects' are empty arrays
-modified_objects_empty = len(data['operations']['modified-objects']) == 0
-deleted_objects_empty = len(data['operations']['deleted-objects']) == 0
-
-# Check if any added object has a type different from 'application-site' => define as a function?
-different_type_objects = [obj for obj in data['operations']['added-objects'] if obj['type'] != 'application-site']
-different_type_objects_empty = len(different_type_objects) == 0
-
-# Print result to SmartConsole's Smart Tasks
-if modified_objects_empty and deleted_objects_empty and different_type_objects_empty and user_can_publish:
-    message = msg_success
-else:
-    msg_failure['message'] = "Check Fails: {}".format(check_summary())
-    message = msg_failure
-
-json.dump(message, sys.stdout)
+if __name__ == '__main__':
+    main(sys.argv[1])

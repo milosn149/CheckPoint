@@ -1,0 +1,18 @@
+Task: Execution of SmartTask "Validate Session Name Before Publish"
+Initiator: System
+Start Time: 10. 1. 2025 15:28
+Completed: 10. 1. 2025 15:28
+Status: Failed
+--------------------------------------------------------------------------------
+SmartTask execution ended in failure status.
+Execution output: 
+Traceback (most recent call last):
+  File "/tmp/rconfd-temp-script-jCnmRE", line 54, in <module>
+    data = load_base64_file_as_json(file_path)
+  File "/tmp/rconfd-temp-script-jCnmRE", line 12, in load_base64_file_as_json
+    with open(file_path, 'r') as file:
+OSError: [Errno 36] File name too long: 'eyJzZXNzaW9uIjp7InVzZXItbmFtZSI6ImFkbWluIiwiZG9tYWluLWluZm8iOnsidWlkIjoiNDFlODIxYTAtMzcyMC0xMWUzLWFhNmUtMDgwMDIwMGM5ZmRlIiwiZG9tYWluLXR5cGUiOiJkb21haW4iLCJuYW1lIjoiU01DIFVzZXIifSwic2Vzc2lvbi1uYW1lIjoiYWRtaW5AMTAuIDEuIDIwMjUiLCJzZXNzaW9uLWRlc2NyaXB0aW9uIjoiIiwicHVibGlzaGVkIjpmYWxzZSwic2Vzc2lvbi11aWQiOiIwMWYxOTFlZC05NmVmLTRlNjEtYWU2Yi05ODFhYTMzZTg1OGYifSwib3BlcmF0aW9ucyI6eyJtb2RpZmllZC1vYmplY3RzIjpbeyJvbGQtb2JqZWN0Ijp7Im5hdC1zZXR0aW5ncyI6eyJhdXRvLXJ1bGUiOmZhbHNlfSwiaW50ZXJmYWNlcyI6W10sImNvbW1lbnRzIjoiIiwiY29sb3IiOiJibGFjayIsImljb24iOiJPYmplY3RzL2hvc3QiLCJtZXRhLWluZm8iOnsiY3JlYXRvciI6ImFkbWluIiwidmFsaWRhdGlvbi1zdGF0ZSI6Im9rIiwibGFzdC1tb2RpZnktdGltZSI6eyJpc28tODYwMSI6IjIwMjQtMDUtMDdUMDk6MTUrMDIwMCIsInBvc2l4IjoxNzE1MDY2MTM5MDg1fSwiY3JlYXRpb24tdGltZSI6eyJpc28tODYwMSI6IjIwMjQtMDUtMDdUMDk6MTUrMDIwMCIsInBvc2l4IjoxNzE1MDY2MTM5MDg1fSwibG9jayI6InVubG9ja2VkIiwibGFzdC1tb2RpZmllciI6ImFkbWluIn0sInR5cGUiOiJob3N0IiwidGFncyI6W10sInVpZCI6IjU0NjRhMjliLTYxMTEtNDhhYy1iZWQ0LTgzYjcxNmFjNDI0YSIsImlwdjQtYWRkcmVzcyI6IjEwLjEuMS4xIiwiZG9tYWluIjp7InVpZCI6IjQxZTgyMWEwLTM3MjAtMTFlMy1hYTZlLTA4MDAyMDBjOWZkZSIsImRvbWFpbi10eXBlIjoiZG9tYWluIiwibmFtZSI6IlNNQyBVc2VyIn0sIm5hbWUiOiJoXzEwLjEuMS4xIiwicmVhZC1vbmx5Ijp0cnVlfSwibmV3LW9iamVjdCI6eyJuYXQtc2V0dGluZ3MiOnsiYXV0by1ydWxlIjpmYWxzZX0sImludGVyZmFjZXMiOltdLCJjb21tZW50cyI6IiIsImNvbG9yIjoiYmxhY2siLCJpY29uIjoiT2JqZWN0cy9ob3N0IiwibWV0YS1pbmZvIjp7ImNyZWF0b3IiOiJhZG1pbiIsInZhbGlkYXRpb24tc3RhdGUiOiJvayIsImxhc3QtbW9kaWZ5LXRpbWUiOnsiaXNvLTg2MDEiOiIyMDI1LTAxLTEwVDE1OjI4KzAxMDAiLCJwb3NpeCI6MTczNjUxOTMxMjcxMX0sImNyZWF0aW9uLXRpbWUiOnsiaXNvLTg2MDEiOiIyMDI0LTA1LTA3VDA5OjE1KzAyMDAiLCJwb3NpeCI6MTcxNTA2NjEzOTA4NX0sImxvY2siOiJ1bmxvY2tlZCIsImxhc3QtbW9kaWZpZXIiOiJhZG1pbiJ9LCJ0eXBlIjoiaG9zdCIsInRhZ3MiOltdLCJ1aWQiOiI1NDY0YTI5Yi02MTExLTQ4YWMtYmVkNC04M2I3MTZhYzQyNGEiLCJpcHY0LWFkZHJlc3MiOiIxMC4xLjEuMiIsImRvbWFpbiI6eyJ1aWQiOiI0MWU4MjFhMC0zNzIwLTExZTMtYWE2ZS0wODAwMjAwYzlmZGUiLCJkb21haW4tdHlwZSI6ImRvbWFpbiIsIm5hbWUiOiJTTUMgVXNlciJ9LCJuYW1lIjoiaF8xMC4xLjEuMSIsInJlYWQtb25seSI6dHJ1ZX19XSwiZGVsZXRlZC1vYmplY3RzIjpbXSwiYWRkZWQtb2JqZWN0cyI6W119LCJjdXN0b20tZGF0YSI6eyJzZXNzaW9uLW5hbWUtcHJlZml4IjoiQ1IiLCJhZG1pbi1uYW1lLXByZWZpeCI6ImFkbWluIn19'
+
+--------------------------------------------------------------------------------
+
+

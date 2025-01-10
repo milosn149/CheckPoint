@@ -4,24 +4,41 @@ import json
 import base64
 import sys
 
-user_prefix = "admin"
+
+# admin_prefix = "admin"
 msg_failure = {"result": "failure", "message": "Something is going wrong."}
 msg_success = {"result": "success", "message": "All is ok, publishing."}
 
-def load_base64_file_as_json(file_path):
-    with open(file_path, 'r') as file:
-        encoded_content = file.read()
-    
+
+def is_it_file(content):
+    # Actually only lenght check, other will be added
+    if len(content) > 200:
+        return(False)
+    else:
+        return(True)
+
+
+def convert_to_json(content):
     # Decode the base64 content
-    decoded_content = base64.b64decode(encoded_content).decode('utf-8')
+    decoded_content = base64.b64decode(content).decode('utf-8')
     
     # Parse the decoded content as JSON
     json_content = json.loads(decoded_content)
-    
+
     # Print the formatted JSON content
     #print(json.dumps(json_content, indent=4))
 
+    return(json_content)    
+
+
+def load_base64_file_as_json(content):
+    with open(content, 'r') as file:
+        encoded_content = file.read()
+
+    json_content = convert_to_json(encoded_content)
+
     return(json_content)
+
 
 def check_summary ():
     # Checks results
@@ -32,12 +49,11 @@ def check_summary ():
     )
 
     # Only for detailed testing
-    # print(f"added-objects are only application-site: {different_type_objects_empty}")
-    # print(f"modified-objects is empty: {modified_objects_empty}")
-    # print(f"deleted-objects is empty: {deleted_objects_empty}")
-    # print(f"user-name has priviledge do publish: {user_can_publish}")
-    
-    # Only for detailed testing
+    #print(f"added-objects are only application-site: {different_type_objects_empty}")
+    #print(f"modified-objects is empty: {modified_objects_empty}")
+    #print(f"deleted-objects is empty: {deleted_objects_empty}")
+    #print(f"user-name has priviledge do publish: {user_can_publish}")
+    #
     #if different_type_objects:
     #    print(f"Objects with different types: {len(different_type_objects)}")
     #    #for obj in different_type_objects:
@@ -50,8 +66,26 @@ def check_summary ():
 
 # main() ???
 # Example usage
-file_path = sys.argv[1]
-data = load_base64_file_as_json(file_path)
+content = sys.argv[1]
+
+if is_it_file(content):
+    #print("Je to soubor.")
+    data = load_base64_file_as_json(content)
+else:
+    #print("Neni to soubor.")
+    data = convert_to_json(content)
+
+# Load Smart Task Custom's parameters
+session_name_prefix=data['custom-data']['session-name-prefix']
+admin_prefix=data['custom-data']['admin-name-prefix']
+#print(admin_prefix, session_name_prefix)
+
+# Check if user-name contains the admin_prefix
+user_name = data["session"]["user-name"]
+if admin_prefix in user_name:
+    user_can_publish = True
+else:
+    user_can_publish = False
 
 # Check if 'modified-objects' and 'deleted-objects' are empty arrays
 modified_objects_empty = len(data['operations']['modified-objects']) == 0
@@ -61,13 +95,6 @@ deleted_objects_empty = len(data['operations']['deleted-objects']) == 0
 different_type_objects = [obj for obj in data['operations']['added-objects'] if obj['type'] != 'application-site']
 different_type_objects_empty = len(different_type_objects) == 0
 
-# Check if user-name contains the user_prefix
-user_name = data["session"]["user-name"]
-if user_prefix in user_name:
-    user_can_publish = True
-else:
-    user_can_publish = False
-
 # Print result to SmartConsole's Smart Tasks
 if modified_objects_empty and deleted_objects_empty and different_type_objects_empty and user_can_publish:
     message = msg_success
@@ -76,6 +103,3 @@ else:
     message = msg_failure
 
 json.dump(message, sys.stdout)
-
-
-

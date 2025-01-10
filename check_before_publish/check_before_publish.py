@@ -5,8 +5,6 @@ import base64
 import sys
 
 
-
-
 def is_it_file(content):
     # Actually only lenght check, other will be added
     if len(content) > 200:
@@ -38,13 +36,12 @@ def load_base64_file_as_json(content):
 
 
 def main(content):
-    # Example usage
     # admin_prefix = "admin"
+    #content = sys.argv[1]
     msg_failure = {"result": "failure", "message": "Something is going wrong."}
     msg_success = {"result": "success", "message": "All is ok, publishing."}
 
-    #content = sys.argv[1]
-
+    # Check if paramater is filepath or content?
     if is_it_file(content):
         #print("Je to soubor.")
         data = load_base64_file_as_json(content)
@@ -64,11 +61,10 @@ def main(content):
     else:
         user_can_publish = False
 
-    # Check if 'modified-objects' and 'deleted-objects' are empty arrays
+    # Check if 'modified-objects' and 'deleted-objects' are empty arrays, 
+    # any added object has a type different from 'application-site' => define as a function?
     modified_objects_empty = len(data['operations']['modified-objects']) == 0
     deleted_objects_empty = len(data['operations']['deleted-objects']) == 0
-
-    # Check if any added object has a type different from 'application-site' => define as a function?
     different_type_objects = [obj for obj in data['operations']['added-objects'] if obj['type'] != 'application-site']
     different_type_objects_empty = len(different_type_objects) == 0
 
@@ -87,7 +83,6 @@ def main(content):
         message = msg_failure
 
     json.dump(message, sys.stdout)
-
 
 
 

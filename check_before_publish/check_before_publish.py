@@ -13,6 +13,16 @@ def is_it_file(content):
         return(True)
 
 
+def is_base64_encoded(content):
+    try:
+        # Try to decode the data
+        decoded_data = base64.b64decode(content, validate=True)
+        # Check if the decoded data can be re-encoded to the same value
+        return base64.b64encode(decoded_data).decode('utf-8') == content
+    except Exception:
+        return False
+
+
 def convert_to_json(content):
     # Decode the base64 content
     decoded_content = base64.b64decode(content).decode('utf-8')
@@ -42,12 +52,20 @@ def main(content):
     msg_success = {"result": "success", "message": "All is ok, publishing."}
 
     # Check if paramater is filepath or content?
-    if is_it_file(content):
-        #print("Je to soubor.")
-        data = load_base64_file_as_json(content)
-    else:
+    # if is_it_file(content):
+    #     #print("Je to soubor.")
+    #     data = load_base64_file_as_json(content)
+    # else:
+    #     #print("Neni to soubor.")
+    #     data = convert_to_json(content)
+
+    # Check if paramater is filepath or content?
+    if is_base64_encoded(content):
         #print("Neni to soubor.")
         data = convert_to_json(content)
+    else:
+        #print("Je to soubor.")
+        data = load_base64_file_as_json(content)
 
     # Load Smart Task Custom's parameters
     session_name_prefix=data['custom-data']['session-name-prefix']
@@ -69,10 +87,10 @@ def main(content):
     different_type_objects_empty = len(different_type_objects) == 0
 
     # Summary of testing
-    summary = (f"added-objects are only application-site: {different_type_objects_empty}, " + 
-        f"modified-objects is empty: {modified_objects_empty}, " + 
-        f"deleted-objects is empty: {deleted_objects_empty}, " + 
-        f"user-name has priviledge do publish: {user_can_publish}"
+    summary = (f"added-objects are only application-site: {different_type_objects_empty},   " +
+        f"modified-objects is empty: {modified_objects_empty},  " + 
+        f"deleted-objects is empty: {deleted_objects_empty},    " + 
+        f"user-name has priviledge do publish: {user_can_publish}   "
     )
 
     # Print result to SmartConsole's Smart Tasks

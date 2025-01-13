@@ -47,9 +47,9 @@ def get_json_data_from_base64(string):
     return json_content
 
 
-def get_json_data_from_base64_file(content):
+def get_json_data_from_base64_file(file_name):
     """Return JSON data from base64 encoded file."""
-    with open(content, 'r') as file:
+    with open(file_name, 'r') as file:
         encoded_content = file.read()
 
     json_content = get_json_data_from_base64(encoded_content)
